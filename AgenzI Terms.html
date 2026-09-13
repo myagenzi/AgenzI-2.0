@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgenzI — Terms of Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#000;color:#fff;font-family:'Space Grotesk',sans-serif;overflow-x:hidden;cursor:none}
+#cursor-orb{position:fixed;top:0;left:0;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#FFD166 0%,#B983FF 45%,#3A6FD8 100%);box-shadow:0 0 12px 4px rgba(138,92,255,0.5),0 0 24px 8px rgba(255,178,0,0.2);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s ease,width .2s ease,height .2s ease,opacity .3s ease;mix-blend-mode:screen}
+#cursor-trail{position:fixed;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(138,92,255,0.35);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .3s ease,height .3s ease,opacity .3s ease;background:radial-gradient(circle,rgba(255,209,102,0.04) 0%,transparent 70%)}
+body:hover #cursor-orb{opacity:1}
+a:hover ~ #cursor-orb,button:hover ~ #cursor-orb{transform:translate(-50%,-50%) scale(1.6)}
+.liquid-glass{background:rgba(255,255,255,0.01);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border:none;box-shadow:inset 0 1px 1px rgba(255,255,255,0.1);position:relative;overflow:hidden}
+.liquid-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(145deg,rgba(185,131,255,0.35) 0%,rgba(58,111,216,0.15) 30%,rgba(255,255,255,0) 50%,rgba(217,70,239,0.1) 80%,rgba(255,178,0,0.2) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+#main-nav{transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s ease}
+#main-nav.nav-hidden{transform:translateY(-110%);opacity:0}
+.footer-compact{border-top:1px solid transparent;border-image:linear-gradient(to right,transparent,rgba(138,92,255,0.25),rgba(255,178,0,0.15),transparent) 1}
+::selection{background:rgba(138,92,255,0.35)}
+a{color:#B983FF}
+a:hover{color:#D9B8FF}
+.ph{color:#FFB300;border-bottom:1px dashed rgba(255,178,0,0.5)}
+.legal-table{width:100%;border-collapse:collapse;font-size:13px}
+.legal-table th,.legal-table td{text-align:left;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.65)}
+.legal-table th{color:rgba(255,255,255,0.4);font-weight:600;font-size:11px;letter-spacing:0.5px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="cursor-orb"></div>
+<div id="cursor-trail"></div>
+<div id="root"></div>
+<script src="logos.js"></script>
+<script>
+(function() {
+  const orb = document.getElementById('cursor-orb');
+  const trail = document.getElementById('cursor-trail');
+  let mx = -100, my = -100, tx = -100, ty = -100;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function tick() {
+    tx += (mx - tx) * 0.18; ty += (my - ty) * 0.18;
+    orb.style.left = mx + 'px'; orb.style.top = my + 'px';
+    trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+  document.addEventListener('mouseover', e => {
+    if (e.target.closest('a, button')) {
+      orb.style.width = '28px'; orb.style.height = '28px';
+      orb.style.boxShadow = '0 0 20px 8px rgba(138,92,255,0.7), 0 0 40px 16px rgba(255,178,0,0.3)';
+      trail.style.width = '56px'; trail.style.height = '56px';
+      trail.style.borderColor = 'rgba(185,131,255,0.5)';
+    }
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest('a, button')) {
+      orb.style.width = '18px'; orb.style.height = '18px';
+      orb.style.boxShadow = '0 0 12px 4px rgba(138,92,255,0.5), 0 0 24px 8px rgba(255,178,0,0.2)';
+      trail.style.width = '36px'; trail.style.height = '36px';
+      trail.style.borderColor = 'rgba(138,92,255,0.35)';
+    }
+  });
+})();
+</script>
+<script type="text/babel">
+const { useRef, useEffect } = React;
+
+function Navbar() {
+  const lastY = useRef(0);
+  useEffect(() => {
+    const nav = document.getElementById('main-nav');
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < 60) nav.classList.remove('nav-hidden');
+      else if (y > lastY.current + 8) nav.classList.add('nav-hidden');
+      else if (y < lastY.current - 8) nav.classList.remove('nav-hidden');
+      lastY.current = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  const links = [['Services','AgenzI Services.html'],['Work','AgenzI Work.html'],['Pricing','AgenzI Pricing.html'],['Notes','AgenzI Notes.html'],['About','AgenzI About.html']];
+  return (
+    <nav id="main-nav" style={{ position: 'fixed', top: 16, left: 0, right: 0, zIndex: 50, padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <a href="AgenzI.html" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+        <img src={window.LOGO_HORIZONTAL} alt="AgenzI" style={{ height: 48, display: 'block', objectFit: 'contain' }} />
+      </a>
+      <div className="liquid-glass" style={{ display: 'flex', alignItems: 'center', borderRadius: 9999, padding: '6px 6px', gap: 2 }}>
+        {links.map(([label, href]) =>
+          <a key={label} href={href} style={{ padding: '8px 14px', fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.85)', textDecoration: 'none', borderRadius: 9999 }}>{label}</a>
+        )}
+        <a href="AgenzI Free Report.html" style={{ padding: '8px 18px', fontSize: 13, fontWeight: 600, background: 'linear-gradient(135deg, #6C3FCF, #3A6FD8)', color: '#fff', borderRadius: 9999, textDecoration: 'none', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 0 16px rgba(108,63,207,0.4)' }}>Get your free AI report</a>
+      </div>
+      <div style={{ width: 64 }}></div>
+    </nav>);
+}
+
+function Footer() {
+  return (
+    <footer className="footer-compact" style={{ padding: '32px clamp(24px, 6vw, 80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <img src={window.LOGO_HORIZONTAL} alt="AgenzI" style={{ height: 36, objectFit: 'contain', display: 'block' }} />
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Create · Market · Run</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+          {['Services', 'Work', 'Notes', 'Pricing', 'About', 'Zenzai', 'AI Audit', 'Privacy', 'Terms'].map(l =>
+            <a key={l} href={{Services:'AgenzI Services.html',Work:'AgenzI Work.html',Notes:'AgenzI Notes.html',Pricing:'AgenzI Pricing.html',About:'AgenzI About.html','AI Audit':'AgenzI Audit.html',Privacy:'AgenzI Privacy.html',Terms:'AgenzI Terms.html'}[l] || '#'} style={{ fontSize: 11, color: l === 'Terms' ? '#B983FF' : 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>{l}</a>)}
+        </div>
+      </div>
+      <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.2)', marginTop: 20 }}>© 2026 AgenzI. All rights reserved.</p>
+    </footer>);
+}
+
+function Ph({ children }) { return <span className="ph">{children}</span>; }
+function P({ children }) { return <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', lineHeight: 1.75, marginBottom: 14 }}>{children}</p>; }
+function H({ children }) { return <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: 20, color: '#fff', margin: '36px 0 12px' }}>{children}</h2>; }
+function Li({ items }) { return <ul style={{ margin: '0 0 14px 20px', display: 'flex', flexDirection: 'column', gap: 6 }}>{items.map((it,i) => <li key={i} style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6 }}>{it}</li>)}</ul>; }
+
+function App() {
+  return (
+    <div style={{ background: '#000', minHeight: '100vh' }}>
+      <Navbar />
+      <section style={{ padding: '180px clamp(24px,6vw,80px) 40px' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+          <div className="liquid-glass" style={{ display: 'inline-flex', borderRadius: 9999, padding: '5px 16px', fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 20 }}>// Legal</div>
+          <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(2rem,4.5vw,3rem)', color: '#fff', letterSpacing: '-2px', marginBottom: 12 }}>Terms of Service</h1>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Last updated: <Ph>[DATE]</Ph></p>
+          <div className="liquid-glass" style={{ borderRadius: '1rem', padding: 18, marginBottom: 8 }}>
+            <p style={{ fontSize: 12.5, color: '#FFB300', lineHeight: 1.6 }}>Draft pending legal review. Bracketed fields (highlighted) must be completed with real business details before this policy is published live.</p>
+          </div>
+        </div>
+      </section>
+      <section style={{ padding: '0 clamp(24px,6vw,80px) clamp(80px,10vw,120px)' }}>
+        <div className="liquid-glass" style={{ maxWidth: 760, margin: '0 auto', borderRadius: '1.5rem', padding: 'clamp(28px,4vw,48px)' }}>
+
+          <H>1. Who these terms are between</H>
+          <P>These terms are between you (the client) and <Ph>[LEGAL ENTITY NAME]</Ph>, operating as AgenzI, registered in <Ph>[COUNTRY]</Ph> <Ph>[registration number]</Ph>. Using our website means you accept these terms. Buying services means you accept them and any project-specific documents we agree.</P>
+
+          <H>2. What we do</H>
+          <P>We provide creative, marketing and technology services using a combination of AI systems and human work. Services are listed on our website and described in each project agreement. <strong style={{color:'#fff'}}>Every deliverable is reviewed by a person before it reaches you</strong> — this is part of the service, not an optional extra.</P>
+
+          <H>3. How we charge — minutes</H>
+          <P>Our work is measured and billed in minutes. You buy minutes in advance as a package. Minutes are consumed at different rates depending on the work:</P>
+          <table className="legal-table" style={{ marginBottom: 16 }}>
+            <thead><tr><th>Type</th><th>Burn</th></tr></thead>
+            <tbody>
+              <tr><td>Zenzai (assistant work, human-checked)</td><td>0.5 min per minute</td></tr>
+              <tr><td>Standard (team work, AI-assisted)</td><td>1 min per minute</td></tr>
+              <tr><td>Senior (design, systems, craft)</td><td>2 min per minute</td></tr>
+              <tr><td>Principal (strategy, direction)</td><td>3 min per minute</td></tr>
+            </tbody>
+          </table>
+          <P>We determine which rate applies, based on who performs the work. The rate for a piece of work is set before it begins and shown on your statement. Minutes are tracked in increments of <Ph>[0.1 minute / 1 minute]</Ph> and reported to you <Ph>[monthly / on request]</Ph>.</P>
+
+          <H>4. Estimates and caps</H>
+          <P>Before a project begins we give you an <strong style={{color:'#fff'}}>estimate</strong> (expected minutes) and a <strong style={{color:'#fff'}}>cap</strong> (maximum minutes). <strong style={{color:'#fff'}}>You will not be billed beyond the cap</strong> for the scope agreed at that point. If we take longer than estimated for reasons within our control, we absorb the difference. If you change the scope, the estimate and cap no longer apply — we'll provide a revised one before continuing. Delays caused by you — late approvals, late materials, unavailable access — do not consume minutes but may move the delivery date.</P>
+
+          <H>5. The wallet</H>
+          <Li items={[
+            'Unused minutes at the end of a billing month move to your wallet.',
+            <><strong style={{color:'#fff'}}>Rollover cap.</strong> Your wallet holds a maximum of 2× your monthly package.</>,
+            <><strong style={{color:'#fff'}}>Expiry.</strong> Wallet minutes expire 12 months from the date they entered the wallet. Oldest minutes are used first.</>,
+            <><strong style={{color:'#fff'}}>Active subscription required.</strong> If your subscription ends, wallet minutes are held for 6 months, then expire.</>,
+            <><strong style={{color:'#fff'}}>Scope.</strong> Wallet minutes may be used for Standard-rate work only.</>,
+            <><strong style={{color:'#fff'}}>Notice for large drawdowns.</strong> Using more than 1,000 wallet minutes in a calendar month requires 14 days' written notice.</>,
+            <><strong style={{color:'#fff'}}>No cash value.</strong> Wallet minutes are not transferable, not refundable, and cannot be exchanged for money or credit.</>,
+          ]} />
+
+          <H>6. Payment</H>
+          <P>Packages are billed monthly in advance. Projects are 50% on commencement, 50% on delivery, unless agreed otherwise. Invoices are due within 15 days. Late payment may pause work and may attract interest at <Ph>[RATE]</Ph> per month. Prices exclude applicable taxes, shown separately on your invoice. Minutes purchased are non-refundable but do not expire within the wallet terms above.</P>
+
+          <H>7. Pass-through costs</H>
+          <P>Advertising spend, third-party software licences and platform fees are your cost, paid on your own accounts wherever possible — we do not mark these up. Where a cost must run through us, we will tell you in advance and bill it at cost plus <Ph>[15]%</Ph>, itemised. Automations and systems we build and operate for you are billed as a flat monthly fee, agreed before we build, not in minutes.</P>
+
+          <H>8. Revisions</H>
+          <P>Each deliverable includes <Ph>[2]</Ph> rounds of revision within the agreed scope. Further revisions consume minutes at the applicable rate. Revisions arising from a change of brief are new work, not revisions.</P>
+
+          <H>9. Your responsibilities</H>
+          <Li items={['Provide accurate information, materials and access','Respond to approval requests within 10 working days','Hold the rights to any material you give us','Verify factual accuracy of any content before you publish it']} />
+
+          <H>10. Ownership</H>
+          <P>On full payment, you own the final deliverables we create for you — designs, copy, video, code written specifically for you, and outputs. We retain ownership of our pre-existing methods, frameworks, prompt libraries, internal tools and workflow architecture; you get a licence to use these as part of your deliverables, not ownership of them. Until payment is complete, we retain ownership of all deliverables. We may reference the work publicly — in our portfolio, case studies or marketing — unless you tell us in writing not to.</P>
+
+          <H>11. AI and its limits</H>
+          <P>We use AI systems in producing work. A person reviews every deliverable before it reaches you. AI systems can produce output that is inaccurate, biased or unsuitable — our review process is designed to catch this, but no review process catches everything. <strong style={{color:'#fff'}}>You are responsible for verifying factual claims, figures and legal or regulatory compliance</strong> in anything you publish. Where work involves synthetic media — generated voice, likeness or presenter content — a separate consent agreement applies.</P>
+
+          <H>12. Confidentiality</H>
+          <P>Each of us agrees to keep the other's confidential information private and to use it only for the purposes of the work. This continues for 3 years after the engagement ends. It does not apply to information that is public, already known, or required to be disclosed by law.</P>
+
+          <H>13. Liability</H>
+          <P>We will perform our services with reasonable skill and care. <strong style={{color:'#fff'}}>Our total liability is limited to the fees you have paid us in the <Ph>[6]</Ph> months before the claim.</strong> We are not liable for indirect or consequential loss, including lost profits, lost revenue, lost data or business interruption. Nothing here limits liability that cannot be limited by law.</P>
+
+          <H>14. Ending the engagement</H>
+          <P>Either of us may end a monthly package with <Ph>[30]</Ph> days' written notice. Work in progress at that point will be completed and billed, or stopped and billed for minutes consumed, as agreed. Either of us may end the engagement immediately if the other materially breaches these terms and does not fix it within 14 days of being told.</P>
+
+          <H>15. General</H>
+          <P><strong style={{color:'#fff'}}>Governing law.</strong> These terms are governed by the laws of <Ph>[COUNTRY/STATE]</Ph>, and the courts of <Ph>[JURISDICTION]</Ph> have exclusive jurisdiction. We may update these terms — material changes will be notified to active clients with 30 days' notice. These terms, plus any project agreement, are the whole agreement between us. If any part is unenforceable, the rest still applies.</P>
+
+          <H>Contact</H>
+          <P><Ph>[EMAIL]</Ph><br/><Ph>[POSTAL ADDRESS]</Ph></P>
+        </div>
+      </section>
+      <Footer />
+    </div>);
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

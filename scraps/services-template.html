@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="0fe7c641-2d2b-44c0-b6f1-2e8ad8ce5f3d"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<style>
+  body{margin:0}
+  ::selection{background:oklch(0.55 0.12 250 / 0.25)}
+  input::placeholder{color:oklch(0.65 0.005 90)}
+</style>
+</helmet>
+<div style="font-family:system-ui,-apple-system,sans-serif;background:oklch(0.985 0.003 90);color:oklch(0.2 0.005 90);min-height:100vh;padding:64px 24px 80px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:100%;max-width:{{ containerWidth }}px;transition:max-width .15s">
+
+    <div style="font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:0.12em;color:oklch(0.5 0.01 90);margin-bottom:28px;text-align:center">SERVICES</div>
+
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <h1 style="font:600 clamp(24px,4vw,32px)/1.2 system-ui,sans-serif;margin:0 0 10px;text-align:center;letter-spacing:-0.01em">Create better. Market smarter. Run faster.</h1>
+      <p style="font:15px/1.6 system-ui,sans-serif;color:oklch(0.4 0.01 90);text-align:center;margin:0 0 32px">AI brings the speed and scale. People bring the thinking and judgment.</p>
+
+      <div style="border:1px solid oklch(0.82 0.005 90);border-radius:4px;background:oklch(1 0 0);padding:20px 22px;margin-bottom:{{ homeGapMargin }}">
+        <label style="font:600 13px system-ui,sans-serif;display:block;margin-bottom:8px">I need AgenzI for</label>
+        <input type="text" value="{{ query }}" sc-camel-on-change="{{ onQueryChange }}" placeholder="website, video, leads, AI..." style="width:100%;box-sizing:border-box;font:15px ui-monospace,Menlo,monospace;padding:11px 12px;border-radius:3px;border:1px solid oklch(0.78 0.005 90);background:oklch(0.99 0.002 90);outline:none">
+
+        <sc-if value="{{ showSuggestions }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+            <sc-for list="{{ suggestions }}" as="sg" hint-placeholder-count="6">
+              <button sc-camel-on-click="{{ sg.onClick }}" style="font:12px ui-monospace,Menlo,monospace;padding:5px 10px;border-radius:12px;border:1px solid oklch(0.78 0.005 90);background:oklch(0.97 0.003 90);color:oklch(0.4 0.005 90);cursor:pointer" style-hover="border-color:oklch(0.2 0.005 90)">{{ sg.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+              <button sc-camel-on-click="{{ r.onClick }}" style="text-align:left;padding:12px 4px;border:none;border-top:1px solid oklch(0.9 0.003 90);background:none;cursor:pointer" style-hover="background:oklch(0.97 0.003 90)">
+                <div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:0.06em;color:oklch(0.55 0.1 250);margin-bottom:3px">{{ r.categoryLabel }}</div>
+                <div style="font:600 15px/1.3 system-ui,sans-serif;margin-bottom:2px">{{ r.name }}</div>
+                <div style="font:13px/1.4 system-ui,sans-serif;color:oklch(0.45 0.01 90)">{{ r.tagline }}</div>
+              </button>
+            </sc-for>
+            <button sc-camel-on-click="{{ openCatalogueFromSearch }}" style="text-align:right;margin-top:8px;font:13px system-ui,sans-serif;color:oklch(0.45 0.01 90);background:none;border:none;cursor:pointer;padding:4px">See all results →</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showNoMatches }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;text-align:center">
+            <p style="font:14px/1.5 system-ui,sans-serif;color:oklch(0.45 0.01 90);margin:0 0 10px">No matches for "{{ query }}"</p>
+            <button sc-camel-on-click="{{ openCatalogueFromSearch }}" style="font:13px ui-monospace,Menlo,monospace;padding:9px 16px;border-radius:3px;cursor:pointer;background:transparent;color:oklch(0.2 0.005 90);border:1px solid oklch(0.75 0.005 90)">[ View all services ]</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ showBrowse }}" hint-placeholder-val="{{ true }}">
+        <div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:0.1em;color:oklch(0.5 0.01 90);text-align:center;margin-bottom:16px">OR START HERE</div>
+
+        <div style="width:100%;border:1px solid oklch(0.82 0.005 90);border-radius:4px;background:oklch(1 0 0);padding:32px;box-sizing:border-box;min-height:280px;display:flex;flex-direction:column;margin-bottom:28px">
+
+          <sc-if value="{{ isTopChoices }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+              <sc-for list="{{ topChoices }}" as="c" hint-placeholder-count="6">
+                <button sc-camel-on-click="{{ c.onClick }}" style="font:15px system-ui,sans-serif;padding:16px;border-radius:3px;border:1px solid oklch(0.82 0.005 90);background:oklch(0.98 0.003 90);cursor:pointer;text-align:center;transition:border-color .15s,background .15s" style-hover="border-color:oklch(0.2 0.005 90);background:oklch(0.95 0.003 90)">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isSubChoices }}" hint-placeholder-val="{{ false }}">
+            <div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:0.1em;color:oklch(0.5 0.01 90);margin-bottom:6px;text-align:center">{{ activeCategoryLabel }}</div>
+            <div style="font:600 18px/1.3 system-ui,sans-serif;margin-bottom:22px;text-align:center">What are you trying to do?</div>
+            <div style="display:flex;flex-direction:column;gap:10px;flex:1">
+              <sc-for list="{{ subChoices }}" as="s" hint-placeholder-count="5">
+                <button sc-camel-on-click="{{ s.onClick }}" style="font:14px ui-monospace,Menlo,monospace;padding:13px 16px;border-radius:3px;border:1px solid oklch(0.82 0.005 90);background:oklch(0.98 0.003 90);cursor:pointer;text-align:left;transition:border-color .15s" style-hover="border-color:oklch(0.2 0.005 90)">[ {{ s.name }} ]</button>
+              </sc-for>
+            </div>
+            <button sc-camel-on-click="{{ backToTop }}" style="align-self:flex-start;margin-top:22px;font:13px system-ui,sans-serif;color:oklch(0.45 0.01 90);background:none;border:none;cursor:pointer;padding:0">← Back</button>
+          </sc-if>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+          <div style="border:1px solid oklch(0.82 0.005 90);border-radius:4px;padding:18px;text-align:center">
+            <div style="font:600 13px/1.3 system-ui,sans-serif;margin-bottom:6px">Not sure?</div>
+            <p style="font:12px/1.5 system-ui,sans-serif;color:oklch(0.45 0.01 90);margin:0 0 12px">Tell us what's taking too much time.</p>
+            <button style="font:12px ui-monospace,Menlo,monospace;padding:9px 12px;border-radius:3px;cursor:pointer;background:oklch(0.2 0.005 90);color:oklch(0.98 0.003 90);border:1px solid oklch(0.2 0.005 90);width:100%">[ Get free AI report ]</button>
+          </div>
+          <div style="border:1px solid oklch(0.82 0.005 90);border-radius:4px;padding:18px;text-align:center">
+            <div style="font:600 13px/1.3 system-ui,sans-serif;margin-bottom:6px">Need a person?</div>
+            <p style="font:12px/1.5 system-ui,sans-serif;color:oklch(0.45 0.01 90);margin:0 0 12px">Have something specific in mind?</p>
+            <button style="font:12px ui-monospace,Menlo,monospace;padding:9px 12px;border-radius:3px;cursor:pointer;background:transparent;color:oklch(0.2 0.005 90);border:1px solid oklch(0.75 0.005 90);width:100%">[ Contact us ]</button>
+          </div>
+          <div style="border:1px solid oklch(0.82 0.005 90);border-radius:4px;padding:18px;text-align:center">
+            <div style="font:600 13px/1.3 system-ui,sans-serif;margin-bottom:6px">Want the full list?</div>
+            <p style="font:12px/1.5 system-ui,sans-serif;color:oklch(0.45 0.01 90);margin:0 0 12px">See everything AgenzI can do.</p>
+            <button sc-camel-on-click="{{ openCatalogueDirect }}" style="font:12px ui-monospace,Menlo,monospace;padding:9px 12px;border-radius:3px;cursor:pointer;background:transparent;color:oklch(0.2 0.005 90);border:1px solid oklch(0.75 0.005 90);width:100%">[ View all services ]</button>
+          </div>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <sc-if value="{{ isCatalogue }}" hint-placeholder-val="{{ false }}">
+      <button sc-camel-on-click="{{ backToHome }}" style="font:13px system-ui,sans-serif;color:oklch(0.45 0.01 90);background:none;border:none;cursor:pointer;padding:0;margin-bottom:20px">← Back to Services</button>
+      <h2 style="font:600 22px/1.2 system-ui,sans-serif;margin:0 0 18px;text-align:center">All Services</h2>
+      <input type="text" value="{{ query }}" sc-camel-on-change="{{ onQueryChange }}" placeholder="Search services..." style="width:100%;box-sizing:border-box;font:14px ui-monospace,Menlo,monospace;padding:10px 12px;border-radius:3px;border:1px solid oklch(0.78 0.005 90);background:oklch(1 0 0);outline:none;margin-bottom:14px">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px">
+        <sc-for list="{{ filterChips }}" as="fc" hint-placeholder-count="5">
+          <button sc-camel-on-click="{{ fc.onClick }}" style="font:12px ui-monospace,Menlo,monospace;padding:7px 13px;border-radius:12px;cursor:pointer;border:1px solid {{ fc.border }};background:{{ fc.bg }};color:{{ fc.color }}">{{ fc.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px">
+        <sc-for list="{{ catalogueCards }}" as="card" hint-placeholder-count="8">
+          <button sc-camel-on-click="{{ card.onClick }}" style="text-align:left;padding:18px;border-radius:4px;cursor:pointer;background:oklch(1 0 0);border:{{ card.borderWidth }}px solid {{ card.borderColor }};display:flex;flex-direction:column;gap:8px" style-hover="border-color:oklch(0.2 0.005 90)">
+            <div style="font:600 10px/1 ui-monospace,Menlo,monospace;letter-spacing:0.06em;color:oklch(0.55 0.1 250)">{{ card.categoryLabel }}</div>
+            <div style="font:600 15px/1.3 system-ui,sans-serif">{{ card.name }}</div>
+            <div style="font:13px/1.5 system-ui,sans-serif;color:oklch(0.45 0.01 90);flex:1">{{ card.tagline }}</div>
+            <div style="font:13px system-ui,sans-serif;color:oklch(0.3 0.005 90);align-self:flex-end">→</div>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+      <button sc-camel-on-click="{{ product.backOnClick }}" style="font:13px system-ui,sans-serif;color:oklch(0.45 0.01 90);background:none;border:none;cursor:pointer;padding:0;margin-bottom:20px">← Back</button>
+      <div style="border:1px solid oklch(0.82 0.005 90);border-radius:4px;background:oklch(1 0 0);padding:32px;box-sizing:border-box">
+        <div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:0.08em;color:oklch(0.55 0.1 250);margin-bottom:10px;text-align:center">{{ product.categoryLabel }}</div>
+        <h2 style="font:600 24px/1.25 system-ui,sans-serif;margin:0 0 10px;text-align:center">{{ product.name }}</h2>
+        <p style="font:15px/1.6 system-ui,sans-serif;color:oklch(0.4 0.01 90);margin:0 0 26px;text-align:center">{{ product.tagline }}</p>
+
+        <div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:0.08em;color:oklch(0.5 0.01 90);margin-bottom:8px">WHAT WE DO</div>
+        <ul style="margin:0 0 22px;padding-left:20px;font:14px/1.7 system-ui,sans-serif;color:oklch(0.3 0.005 90)">
+          <sc-for list="{{ product.whatWeDo }}" as="item" hint-placeholder-count="4">
+            <li>{{ item }}</li>
+          </sc-for>
+        </ul>
+
+        <div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:0.08em;color:oklch(0.5 0.01 90);margin-bottom:8px">WHAT CHANGES</div>
+        <p style="margin:0 0 26px;font:14px/1.6 system-ui,sans-serif;color:oklch(0.3 0.005 90)">{{ product.whatChanges }}</p>
+
+        <div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:0.08em;color:oklch(0.5 0.01 90);margin-bottom:10px">YOU MIGHT ALSO NEED</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px">
+          <sc-for list="{{ product.related }}" as="rel" hint-placeholder-count="3">
+            <button sc-camel-on-click="{{ rel.onClick }}" style="font:12px ui-monospace,Menlo,monospace;padding:7px 12px;border-radius:12px;border:1px solid oklch(0.78 0.005 90);background:oklch(0.97 0.003 90);color:oklch(0.35 0.005 90);cursor:pointer" style-hover="border-color:oklch(0.2 0.005 90)">{{ rel.name }}</button>
+          </sc-for>
+        </div>
+
+        <button style="font:13px ui-monospace,Menlo,monospace;padding:12px 20px;border-radius:3px;cursor:pointer;background:oklch(0.2 0.005 90);color:oklch(0.98 0.003 90);border:1px solid oklch(0.2 0.005 90);width:100%">[ Talk to us ]</button>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{}">
+const CATEGORY_LABELS = { aiEnablement: 'AI Enablement', create: 'Create', market: 'Market', run: 'Run' };
+
+const SERVICES = [
+  { id: 'ai-audit', name: 'AI Stack Audit', category: 'aiEnablement', tagline: 'Find out where AI could actually help before you build anything.', whatWeDo: ['Review of current tools & workflows', 'Opportunity mapping', 'Priority recommendations'], whatChanges: 'You stop guessing where to start — you get a ranked list of what to fix first.', related: ['prompt-eng', 'ai-training', 'custom-ai'], searchTerms: ['audit', 'assessment', 'where to start', 'ai readiness'] },
+  { id: 'prompt-eng', name: 'Prompt Engineering & System Design', category: 'aiEnablement', tagline: 'Turn one-off prompts into systems that work every time.', whatWeDo: ['Prompt libraries', 'System design', 'Testing & refinement'], whatChanges: 'Your team stops rewriting the same prompt from scratch — it just works.', related: ['ai-audit', 'brand-prompts', 'custom-gpt'], searchTerms: ['prompts', 'prompt engineering', 'chatgpt', 'claude setup'] },
+  { id: 'brand-prompts', name: 'Brand Prompt Libraries', category: 'aiEnablement', tagline: 'Give your whole team the same, on-brand AI starting point.', whatWeDo: ['Brand-tuned prompt sets', 'Tone & style guardrails', 'Team rollout'], whatChanges: 'Everyone gets on-brand output from AI, not fifty different voices.', related: ['prompt-eng', 'ai-training'], searchTerms: ['brand voice', 'tone', 'consistency', 'prompt library'] },
+  { id: 'custom-gpt', name: 'Custom GPT & Claude Project Builds', category: 'aiEnablement', tagline: 'Build an assistant trained on your business, not the internet.', whatWeDo: ['Custom GPT/Claude projects', 'Knowledge base setup', 'Team training'], whatChanges: 'You get answers grounded in your own docs and data, not generic ones.', related: ['prompt-eng', 'custom-ai'], searchTerms: ['custom gpt', 'claude project', 'ai assistant', 'chatbot'] },
+  { id: 'ai-training', name: 'AI Team Training', category: 'aiEnablement', tagline: 'Get your team using AI well, not just using AI.', whatWeDo: ['Hands-on workshops', 'Use-case coaching', 'Ongoing support'], whatChanges: "AI stops being one person's side project and becomes how the team works.", related: ['ai-audit', 'prompt-eng'], searchTerms: ['training', 'workshop', 'upskilling', 'education'] },
+
+  { id: 'stand-in', name: 'The Stand-In', category: 'create', tagline: "You know you should be on camera. You're not going to be on camera.", whatWeDo: ['AI-powered video using your likeness and voice', 'Script & production support'], whatChanges: 'You can be in ten places at once — without filming ten times.', related: ['video', 'content-engine'], searchTerms: ['video avatar', 'likeness', 'ai video', 'on camera'], featured: true },
+  { id: 'video', name: 'Video Production', category: 'create', tagline: 'Product films, explainers, ads, reels and more.', whatWeDo: ['Filming', 'Editing', 'Short-form cutdowns'], whatChanges: 'Video stops being a special request and becomes something you can ask for regularly.', related: ['stand-in', 'design-studio', 'creative-volume'], searchTerms: ['video', 'film', 'reels', 'explainer', 'ad'] },
+  { id: 'brand-identity', name: 'Brand Identity', category: 'create', tagline: 'Give your business a clear, consistent identity.', whatWeDo: ['Brand identity', 'Naming', 'Messaging', 'Guidelines'], whatChanges: "You get a clear identity that's consistent everywhere, without hiring a full creative team.", related: ['design-studio', 'websites'], searchTerms: ['brand', 'logo', 'naming', 'messaging', 'identity'] },
+  { id: 'design-studio', name: 'Design Studio', category: 'create', tagline: 'Design that keeps up with how fast you move.', whatWeDo: ['Decks', 'Social creative', 'Ad creative', 'Print'], whatChanges: 'Design stops being the bottleneck between an idea and it going out.', related: ['brand-identity', 'decks', 'creative-volume'], searchTerms: ['design', 'graphics', 'creative', 'visuals'] },
+  { id: 'decks', name: 'Decks & Documents', category: 'create', tagline: 'Decks and documents that make the case, fast.', whatWeDo: ['Pitch decks', 'Sales decks', 'Reports', 'Internal documents'], whatChanges: 'A deck stops taking a week and starts taking a day.', related: ['design-studio', 'content-engine'], searchTerms: ['deck', 'presentation', 'document', 'report', 'pitch'] },
+  { id: 'websites', name: 'Websites', category: 'create', tagline: 'Build the place where people decide whether to take you seriously.', whatWeDo: ['UI/UX design', 'Website design & development', 'Landing pages', 'E-commerce', 'Admin portals'], whatChanges: "The site gets built faster, and a small change doesn't have to become a new project.", related: ['website-care', 'brand-identity', 'custom-ai'], searchTerms: ['website', 'web', 'landing page', 'ecommerce', 'e-commerce', 'online store', 'portal'] },
+  { id: 'software', name: 'Software & Apps', category: 'create', tagline: 'Internal work that used to take weeks, in days.', whatWeDo: ['Apps', 'Internal tools', 'Dashboards', 'APIs'], whatChanges: 'Your team gets the tool they actually need, built around how you work.', related: ['custom-ai', 'integrations', 'websites'], searchTerms: ['app', 'software', 'internal tool', 'dashboard', 'api'] },
+  { id: 'custom-ai', name: 'Custom AI Systems', category: 'create', tagline: "Build AI around your business when off-the-shelf isn't enough.", whatWeDo: ['Custom AI systems', 'AI products', 'Document processing'], whatChanges: 'You get AI that fits how your business actually works, not a generic chatbot bolted on.', related: ['custom-gpt', 'software', 'supervision'], searchTerms: ['custom ai', 'ai system', 'document processing', 'ai product'] },
+
+  { id: 'social', name: 'Social Media', category: 'market', tagline: 'Keep your social presence active and on-brand.', whatWeDo: ['Social strategy', 'Content', 'Community'], whatChanges: 'Your social presence stays active without needing a full-time team.', related: ['managed-social', 'paid', 'creative-volume'], searchTerms: ['social', 'instagram', 'tiktok', 'community'] },
+  { id: 'paid', name: 'Paid Media', category: 'market', tagline: "Put spend where it's actually converting.", whatWeDo: ['Google', 'Meta', 'LinkedIn', 'YouTube', 'TikTok'], whatChanges: "Ad spend goes toward what's actually converting, tracked across every platform.", related: ['social', 'creative-volume', 'market-research'], searchTerms: ['ads', 'paid', 'ppc', 'google ads', 'meta ads'] },
+  { id: 'creative-volume', name: 'Creative at Volume', category: 'market', tagline: 'Test more ideas without betting everything on one direction.', whatWeDo: ['Campaign creative', 'Ad variations', 'Content at volume'], whatChanges: 'You can test more ideas faster instead of guessing which one works.', related: ['design-studio', 'paid', 'social'], searchTerms: ['creative', 'campaigns', 'ad variations', 'testing'], featured: true },
+  { id: 'market-research', name: 'Market Research', category: 'market', tagline: 'Make decisions on what people actually want.', whatWeDo: ['Market research', 'Competitor research', 'Audience research', 'Sentiment analysis'], whatChanges: 'Decisions get made on what people actually want, not assumptions.', related: ['paid', 'email'], searchTerms: ['research', 'competitors', 'audience', 'sentiment', 'positioning'] },
+  { id: 'email', name: 'Email', category: 'market', tagline: 'Follow up on leads before they go cold.', whatWeDo: ['Campaigns', 'Nurture', 'Follow-up', 'Re-engagement'], whatChanges: 'Leads that used to go cold get followed up automatically, at the right moment.', related: ['business-automations', 'market-research'], searchTerms: ['email', 'newsletter', 'nurture', 'follow-up'] },
+
+  { id: 'content-engine', name: 'Content Engine', category: 'run', tagline: 'One piece of content, turned into many.', whatWeDo: ['Repurposing', 'Publishing workflows', 'Scheduling'], whatChanges: 'One piece of content turns into many, published on schedule without extra effort.', related: ['decks', 'video', 'managed-social'], searchTerms: ['content engine', 'repurposing', 'publishing'], featured: true },
+  { id: 'managed-social', name: 'Managed Social', category: 'run', tagline: 'Every comment and message gets a timely response.', whatWeDo: ['Comments', 'Messages', 'Reputation', 'Escalation'], whatChanges: 'Every comment and message gets a response, and the important ones reach a person.', related: ['social', 'content-engine'], searchTerms: ['comments', 'messages', 'reputation', 'moderation'] },
+  { id: 'business-automations', name: 'Business Automations', category: 'run', tagline: 'The busywork disappears.', whatWeDo: ['Lead capture', 'WhatsApp', 'CRM follow-up', 'Payments', 'Appointments', 'Support'], whatChanges: 'Leads, messages and bookings get handled without someone doing it by hand.', related: ['integrations', 'email', 'supervision'], searchTerms: ['automation', 'automate', 'leads', 'whatsapp', 'crm', 'invoices', 'payments', 'appointments', 'reminders', 'customer support', 'repetitive work', 'recurring tasks'] },
+  { id: 'integrations', name: 'Integrations', category: 'run', tagline: 'Stop copying data between systems.', whatWeDo: ['CRM', 'ERP', 'Accounting', 'APIs', 'Data sync'], whatChanges: "Your tools finally talk to each other, so nobody's copying data by hand.", related: ['business-automations', 'software'], searchTerms: ['integrations', 'crm', 'erp', 'accounting', 'api', 'data sync', 'connect'] },
+  { id: 'website-care', name: 'Website Care', category: 'run', tagline: 'Keep your website moving as your business moves.', whatWeDo: ['Security', 'Updates', 'Performance', 'Small changes'], whatChanges: 'The site stays fast, secure and current without you having to think about it.', related: ['websites', 'custom-ai'], searchTerms: ['website care', 'maintenance', 'security', 'updates', 'performance'] },
+  { id: 'supervision', name: 'Supervision', category: 'run', tagline: 'Your AI systems keep improving instead of drifting.', whatWeDo: ['Monitoring', 'Quality checks', 'Prompt refinement', 'Performance reviews'], whatChanges: 'Someone is always watching quality, so AI keeps getting better instead of drifting.', related: ['custom-ai', 'business-automations', 'ai-audit'], searchTerms: ['supervision', 'monitoring', 'quality', 'oversight'], featured: true },
+];
+
+const SERVICE_MAP = {};
+SERVICES.forEach(s => SERVICE_MAP[s.id] = s);
+
+const TOP_CHOICES = [
+  { key: 'make', label: 'Make something', subs: ['brand-identity', 'websites', 'video', 'design-studio', 'decks', 'stand-in'] },
+  { key: 'reach', label: 'Reach more people', subs: ['social', 'paid', 'creative-volume', 'market-research', 'email'] },
+  { key: 'build', label: 'Build a system', subs: ['websites', 'software', 'custom-ai'] },
+  { key: 'automate', label: 'Automate work', subs: ['business-automations', 'integrations', 'email'] },
+  { key: 'keep', label: 'Keep things running', subs: ['website-care', 'content-engine', 'managed-social', 'integrations', 'supervision'] },
+  { key: 'ai', label: 'Use AI better', subs: ['ai-audit', 'prompt-eng', 'custom-gpt', 'ai-training', 'brand-prompts'] },
+];
+
+const SUGGESTIONS = ['website', 'video', 'leads', 'AI', 'social', 'automation'];
+
+class Component extends DCLogic {
+  state = { mode: 'home', categoryKey: null, serviceId: null, returnTo: 'home', returnCategoryKey: null, query: '', filter: 'All' };
+
+  setQuery(v) { this.setState({ query: v }); }
+  openCategory(key) { this.setState({ categoryKey: key }); }
+  backToTop() { this.setState({ categoryKey: null }); }
+  openProduct(id, returnTo, returnCategoryKey) { this.setState({ mode: 'product', serviceId: id, returnTo, returnCategoryKey: returnCategoryKey ?? null }); }
+  openRelated(id) { this.setState({ serviceId: id }); }
+  backFromProduct() {
+    if (this.state.returnTo === 'catalogue') this.setState({ mode: 'catalogue', serviceId: null });
+    else this.setState({ mode: 'home', serviceId: null, categoryKey: this.state.returnCategoryKey });
+  }
+  openCatalogue() { this.setState({ mode: 'catalogue', categoryKey: null }); }
+  backToHome() { this.setState({ mode: 'home' }); }
+  setFilter(f) { this.setState({ filter: f }); }
+
+  matchServices(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return SERVICES.filter(s => s.name.toLowerCase().includes(q) || s.tagline.toLowerCase().includes(q) || s.searchTerms.some(t => t.includes(q)));
+  }
+
+  renderVals() {
+    const query = this.state.query;
+    const matches = this.matchServices(query);
+    const hasQuery = query.trim().length > 0;
+    const category = TOP_CHOICES.find(c => c.key === this.state.categoryKey);
+
+    const containerWidth = this.state.mode === 'home' ? (this.state.categoryKey ? 620 : 560) : 620;
+
+    let product = null;
+    if (this.state.mode === 'product' && this.state.serviceId) {
+      const s = SERVICE_MAP[this.state.serviceId];
+      product = {
+        categoryLabel: CATEGORY_LABELS[s.category],
+        name: s.name,
+        tagline: s.tagline,
+        whatWeDo: s.whatWeDo,
+        whatChanges: s.whatChanges,
+        related: s.related.map(rid => ({ name: SERVICE_MAP[rid].name, onClick: () => this.openRelated(rid) })),
+        backOnClick: () => this.backFromProduct(),
+      };
+    }
+
+    let catalogueCards = [];
+    if (this.state.mode === 'catalogue') {
+      catalogueCards = SERVICES.filter(s => {
+        const filterOk = this.state.filter === 'All' || CATEGORY_LABELS[s.category] === this.state.filter;
+        const queryOk = !hasQuery || matches.includes(s);
+        return filterOk && queryOk;
+      }).map(s => ({
+        categoryLabel: CATEGORY_LABELS[s.category],
+        name: s.name,
+        tagline: s.tagline,
+        borderWidth: s.featured ? 2 : 1,
+        borderColor: s.featured ? 'oklch(0.55 0.13 250)' : 'oklch(0.82 0.005 90)',
+        onClick: () => this.openProduct(s.id, 'catalogue', null),
+      }));
+    }
+
+    return {
+      isHome: this.state.mode === 'home',
+      isCatalogue: this.state.mode === 'catalogue',
+      isProduct: this.state.mode === 'product',
+      containerWidth,
+      homeGapMargin: hasQuery ? '0px' : '28px',
+      showBrowse: !hasQuery,
+      query,
+      onQueryChange: e => this.setQuery(e.target.value),
+      showSuggestions: !hasQuery,
+      suggestions: SUGGESTIONS.map(w => ({ label: w, onClick: () => this.setQuery(w) })),
+      hasResults: hasQuery && matches.length > 0,
+      showNoMatches: hasQuery && matches.length === 0,
+      results: matches.slice(0, 4).map(s => ({
+        name: s.name,
+        tagline: s.tagline,
+        categoryLabel: CATEGORY_LABELS[s.category],
+        onClick: () => this.openProduct(s.id, 'home', this.state.categoryKey),
+      })),
+      openCatalogueFromSearch: () => this.openCatalogue(),
+      openCatalogueDirect: () => this.openCatalogue(),
+      isTopChoices: !this.state.categoryKey,
+      isSubChoices: !!this.state.categoryKey,
+      topChoices: TOP_CHOICES.map(c => ({ label: c.label, onClick: () => this.openCategory(c.key) })),
+      activeCategoryLabel: category ? category.label.toUpperCase() : '',
+      subChoices: category ? category.subs.map(id => ({ name: SERVICE_MAP[id].name, onClick: () => this.openProduct(id, 'home', category.key) })) : [],
+      backToTop: () => this.backToTop(),
+      backToHome: () => this.backToHome(),
+      product,
+      filterChips: ['All', 'AI Enablement', 'Create', 'Market', 'Run'].map(f => ({
+        label: f,
+        onClick: () => this.setFilter(f),
+        border: f === this.state.filter ? 'oklch(0.55 0.13 250)' : 'oklch(0.78 0.005 90)',
+        bg: f === this.state.filter ? 'oklch(0.94 0.03 250)' : 'oklch(1 0 0)',
+        color: f === this.state.filter ? 'oklch(0.3 0.08 250)' : 'oklch(0.35 0.005 90)',
+      })),
+      catalogueCards,
+    };
+  }
+}
+
+</script>
+
+
+</body></html>

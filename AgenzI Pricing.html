@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgenzI — Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:transparent;color:#fff;font-family:'Space Grotesk',sans-serif;overflow-x:hidden;cursor:none}
+#bg-video{pointer-events:none;opacity:0.85}
+#cursor-orb{position:fixed;top:0;left:0;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#FFD166 0%,#B983FF 45%,#3A6FD8 100%);box-shadow:0 0 12px 4px rgba(138,92,255,0.5),0 0 24px 8px rgba(255,178,0,0.2);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s ease,width .2s ease,height .2s ease,opacity .3s ease;mix-blend-mode:screen}
+#cursor-trail{position:fixed;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(138,92,255,0.35);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .3s ease,height .3s ease,opacity .3s ease;background:radial-gradient(circle,rgba(255,209,102,0.04) 0%,transparent 70%)}
+body:hover #cursor-orb{opacity:1}
+a:hover ~ #cursor-orb,button:hover ~ #cursor-orb{transform:translate(-50%,-50%) scale(1.6)}
+.liquid-glass{background:rgba(255,255,255,0.01);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border:none;box-shadow:inset 0 1px 1px rgba(255,255,255,0.1);position:relative;overflow:hidden}
+.liquid-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(145deg,rgba(185,131,255,0.35) 0%,rgba(58,111,216,0.15) 30%,rgba(255,255,255,0) 50%,rgba(217,70,239,0.1) 80%,rgba(255,178,0,0.2) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.liquid-glass-strong{background:rgba(108,63,207,0.06);backdrop-filter:blur(50px);-webkit-backdrop-filter:blur(50px);border:none;box-shadow:0 4px 24px rgba(138,92,255,0.12),inset 0 1px 1px rgba(185,131,255,0.2);position:relative;overflow:hidden}
+.liquid-glass-strong::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(145deg,rgba(185,131,255,0.5) 0%,rgba(58,111,216,0.2) 30%,rgba(255,255,255,0) 50%,rgba(217,70,239,0.15) 80%,rgba(255,178,0,0.3) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+#main-nav{transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s ease}
+#main-nav.nav-hidden{transform:translateY(-110%);opacity:0}
+.footer-compact{border-top:1px solid transparent;border-image:linear-gradient(to right,transparent,rgba(138,92,255,0.25),rgba(255,178,0,0.15),transparent) 1}
+input::placeholder{color:rgba(255,255,255,0.35)}
+::selection{background:rgba(138,92,255,0.35)}
+a{color:#B983FF}
+a:hover{color:#D9B8FF}
+input[type="range"]{accent-color:#8A5CFF}
+</style>
+</head>
+<body>
+<div id="cursor-orb"></div>
+<div id="cursor-trail"></div>
+<video autoplay muted loop playsinline id="bg-video" style="position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2">
+<source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260809_012548_ef22562c-c0ae-4816-ad9d-f8922af4e6a7.mp4" type="video/mp4" />
+</video>
+<div style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.75) 100%)"></div>
+<div id="root"></div>
+<script src="logos.js"></script>
+<script>
+(function() {
+  const orb = document.getElementById('cursor-orb');
+  const trail = document.getElementById('cursor-trail');
+  let mx = -100, my = -100, tx = -100, ty = -100;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function tick() {
+    tx += (mx - tx) * 0.18;
+    ty += (my - ty) * 0.18;
+    orb.style.left = mx + 'px';
+    orb.style.top = my + 'px';
+    trail.style.left = tx + 'px';
+    trail.style.top = ty + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+  document.addEventListener('mouseover', e => {
+    if (e.target.closest('a, button')) {
+      orb.style.width = '28px'; orb.style.height = '28px';
+      orb.style.boxShadow = '0 0 20px 8px rgba(138,92,255,0.7), 0 0 40px 16px rgba(255,178,0,0.3)';
+      trail.style.width = '56px'; trail.style.height = '56px';
+      trail.style.borderColor = 'rgba(185,131,255,0.5)';
+    }
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest('a, button')) {
+      orb.style.width = '18px'; orb.style.height = '18px';
+      orb.style.boxShadow = '0 0 12px 4px rgba(138,92,255,0.5), 0 0 24px 8px rgba(255,178,0,0.2)';
+      trail.style.width = '36px'; trail.style.height = '36px';
+      trail.style.borderColor = 'rgba(138,92,255,0.35)';
+    }
+  });
+})();
+</script>
+<script type="text/babel">
+const { useRef, useEffect, useState } = React;
+
+function ArrowUpRight({ size = 20 }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>);
+}
+
+function Navbar() {
+  const lastY = useRef(0);
+  useEffect(() => {
+    const nav = document.getElementById('main-nav');
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < 60) nav.classList.remove('nav-hidden');
+      else if (y > lastY.current + 8) nav.classList.add('nav-hidden');
+      else if (y < lastY.current - 8) nav.classList.remove('nav-hidden');
+      lastY.current = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  const links = [['Services','AgenzI Services.html'],['Work','AgenzI Work.html'],['Pricing','AgenzI Pricing.html'],['Notes','AgenzI Notes.html'],['About','AgenzI About.html']];
+  return (
+    <nav id="main-nav" style={{ position: 'fixed', top: 16, left: 0, right: 0, zIndex: 50, padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <a href="AgenzI.html" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+        <img src={window.LOGO_HORIZONTAL} alt="AgenzI" style={{ height: 48, display: 'block', objectFit: 'contain' }} />
+      </a>
+      <div className="liquid-glass" style={{ display: 'flex', alignItems: 'center', borderRadius: 9999, padding: '6px 6px', gap: 2 }}>
+        {links.map(([label, href]) =>
+          <a key={label} href={href} style={{ padding: '8px 14px', fontSize: 13, fontWeight: label === 'Pricing' ? 600 : 500, color: label === 'Pricing' ? '#B983FF' : 'rgba(255,255,255,0.85)', textDecoration: 'none', borderRadius: 9999 }}>{label}</a>
+        )}
+        <a href="AgenzI Free Report.html" style={{ padding: '8px 18px', fontSize: 13, fontWeight: 600, background: 'linear-gradient(135deg, #6C3FCF, #3A6FD8)', color: '#fff', borderRadius: 9999, textDecoration: 'none', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 0 16px rgba(108,63,207,0.4)' }}>Get your free AI report</a>
+      </div>
+      <div style={{ width: 64 }}></div>
+    </nav>);
+}
+
+function Footer() {
+  return (
+    <footer className="footer-compact" style={{ padding: '32px clamp(24px, 6vw, 80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <img src={window.LOGO_HORIZONTAL} alt="AgenzI" style={{ height: 36, objectFit: 'contain', display: 'block' }} />
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Create · Market · Run</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+          {['Services', 'Work', 'Notes', 'Pricing', 'About', 'Zenzai', 'AI Audit', 'Privacy', 'Terms'].map(l =>
+            <a key={l} href={{Services:'AgenzI Services.html',Work:'AgenzI Work.html',Notes:'AgenzI Notes.html',Pricing:'AgenzI Pricing.html',About:'AgenzI About.html','AI Audit':'AgenzI Audit.html',Privacy:'AgenzI Privacy.html',Terms:'AgenzI Terms.html'}[l] || '#'} style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>{l}</a>)}
+        </div>
+      </div>
+      <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.2)', marginTop: 20 }}>© 2026 AgenzI. All rights reserved.</p>
+    </footer>);
+}
+
+const kicker = { display: 'inline-flex', borderRadius: 9999, padding: '5px 16px', fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 20 };
+const h2Style = { fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(2rem, 4.2vw, 3.2rem)', color: '#fff', lineHeight: 1.08, letterSpacing: '-2px', maxWidth: 760, marginBottom: 16 };
+const bodyMuted = { fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 };
+const ctaGrad = { background: 'linear-gradient(135deg,#6C3FCF,#3A6FD8)' };
+
+function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="liquid-glass" style={{ borderRadius: '1.25rem', overflow: 'hidden' }}>
+      <button onClick={() => setOpen(!open)} style={{ width: '100%', textAlign: 'left', background: 'transparent', border: 'none', cursor: 'pointer', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+        <span style={{ fontSize: 15, color: '#fff', fontWeight: 500 }}>{q}</span>
+        <span style={{ fontSize: 20, color: '#B983FF', flexShrink: 0, transform: open ? 'rotate(45deg)' : 'none', transition: 'transform 0.2s' }}>+</span>
+      </button>
+      {open && <div style={{ padding: '0 24px 22px' }}><p style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7 }}>{a}</p></div>}
+    </div>);
+}
+
+/* ── Hero: calculator ── */
+function Hero() {
+  const [mins, setMins] = useState(30);
+  return (
+    <section style={{ padding: '200px clamp(24px,6vw,80px) 90px', textAlign: 'center', position: 'relative' }}>
+      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div className="liquid-glass" style={kicker}>// PRICING</div>
+      <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(2.4rem,6vw,4.6rem)', color: '#fff', letterSpacing: '-3px', lineHeight: 1.05, maxWidth: 780, margin: '0 auto 20px' }}>You pay for the time it actually takes.</h1>
+      <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, maxWidth: 560, margin: '0 auto 48px' }}>No quotes pulled out of the air. No retainer you can't see through.</p>
+      <div className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 'clamp(28px,4vw,40px)', maxWidth: 560, margin: '0 auto 32px', textAlign: 'left' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 18 }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>HOW MUCH WORK?</div>
+            <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 28, color: '#fff' }}>{mins} min</div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>YOUR COST</div>
+            <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 28, color: '#B983FF' }}>${mins * 2}</div>
+          </div>
+        </div>
+        <input type="range" min="5" max="240" step="5" value={mins} onChange={e => setMins(+e.target.value)} style={{ width: '100%' }} />
+        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 12, textAlign: 'center' }}>Published, not quoted.</p>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <a href="#packages" style={{ borderRadius: 9999, padding: '13px 30px', fontSize: 14, fontWeight: 600, color: '#fff', display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', ...ctaGrad, boxShadow: '0 0 24px rgba(108,63,207,0.45)' }}>Buy minutes <ArrowUpRight size={16} /></a>
+        <a href="AgenzI Free Report.html" className="liquid-glass" style={{ borderRadius: 9999, padding: '13px 30px', fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Get your free AI report</a>
+      </div>
+      </div>
+    </section>);
+}
+
+/* ── How it works: 4 steps ── */
+function HowItWorks() {
+  const ref = useRef(null);
+  const steps = [
+    { n: '01', title: 'You buy minutes.', body: "A block of our team's time. Buy more and the rate comes down.", visual: <div><div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>YOUR WALLET</div><div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 22, color: '#fff' }}>1,500 minutes</div><div style={{ fontSize: 13, color: '#B983FF' }}>$2,700</div></div> },
+    { n: '02', title: 'We work.', body: 'Minutes come off your balance as we go.', visual: <div><div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>JOB STARTED — Landing page</div><div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 22, color: '#fff' }}>Used: 146 min</div></div> },
+    { n: '03', title: 'You see where they went.', body: 'Every job, itemized, on one statement.', visual: <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>THIS MONTH</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Landing page</span><span>146 min</span></div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Campaign</span><span>82 min</span></div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Research</span><span>21 min</span></div>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.15)', marginTop: 4, paddingTop: 4, display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: '#fff' }}><span>Total</span><span>283 min</span></div>
+      </div> },
+    { n: '04', title: 'Unused minutes roll over.', body: "What's left moves into your wallet for next time.", visual: <div><div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>MONTH END</div><div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 20, color: '#fff' }}>Unused 1,217 min → Wallet</div><div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>Valid until Sep 2027</div></div> },
+  ];
+  return (
+    <section ref={ref} style={{ padding: 'clamp(80px,12vw,140px) clamp(24px,6vw,80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// How it works</div>
+        <h2 style={h2Style}>It's pretty simple.</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginTop: 32 }}>
+          {steps.map(s =>
+            <div key={s.n} className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 26, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 26, color: '#8A5CFF' }}>{s.n}</span>
+              <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: 18, color: '#fff', lineHeight: 1.2 }}>{s.title}</h3>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>{s.body}</p>
+              <div style={{ marginTop: 'auto', paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.08)' }}>{s.visual}</div>
+            </div>)}
+        </div>
+      </div>
+    </section>);
+}
+
+/* ── Rates ── */
+function Rates() {
+  const rates = [
+    { key: 'zenzai', name: 'ZENZAI', mult: '½×', price: '$1 / min', body: 'AI does the work. A person checks it.' },
+    { key: 'standard', name: 'STANDARD', mult: '1×', price: '$2 / min', body: 'Our team works. AI assists.' },
+    { key: 'senior', name: 'SENIOR', mult: '2×', price: '$4 / min', body: 'Design. Systems. Real craft.' },
+    { key: 'principal', name: 'PRINCIPAL', mult: '3×', price: '$6 / min', body: 'Strategy. Direction. Final call.' },
+  ];
+  const priceMap = { zenzai: 1, standard: 2, senior: 4, principal: 6 };
+  const [rate, setRate] = useState('standard');
+  return (
+    <section style={{ padding: 'clamp(80px,12vw,140px) clamp(24px,6vw,80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// Rates</div>
+        <h2 style={h2Style}>Not every minute costs the same.</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, margin: '32px 0' }}>
+          {rates.map(r =>
+            <button key={r.key} onClick={() => setRate(r.key)} className="liquid-glass" style={{ textAlign: 'left', cursor: 'pointer', borderRadius: '1.25rem', padding: 22, display: 'flex', flexDirection: 'column', gap: 10, border: rate === r.key ? '1px solid rgba(138,92,255,0.5)' : undefined }}>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: '#8A5CFF' }}>{r.name} · {r.mult}</span>
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 22, color: '#fff' }}>{r.price}</span>
+              <span style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.5)' }}>{r.body}</span>
+            </button>)}
+        </div>
+        <div className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 'clamp(28px,4vw,40px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', marginBottom: 20 }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>A 60-MINUTE JOB</div>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)' }}>60 min worked → 60 min used</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 32, color: '#B983FF' }}>${60 * priceMap[rate]}</div>
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>Based on the rate selected above.</p>
+          </div>
+        </div>
+        <FaqItem q="Who decides the rate?" a="We do, transparently: the rate is set by the kind of work being done, and it's shown on every job before it starts. You always know which tier you're paying for." />
+      </div>
+    </section>);
+}
+
+/* ── Packages ── */
+function Packages() {
+  const tiers = [
+    { name: 'Starter', mins: 500, price: 1000, save: 0 },
+    { name: 'Growth', mins: 1500, price: 2700, save: 10 },
+    { name: 'Scale', mins: 4000, price: 6400, save: 20 },
+    { name: 'Partner', mins: 10000, price: 14000, save: 30 },
+  ];
+  const [idx, setIdx] = useState(1);
+  const t = tiers[idx];
+  const per = (t.price / t.mins).toFixed(2);
+  return (
+    <section id="packages" style={{ padding: 'clamp(80px,12vw,140px) clamp(24px,6vw,80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// Packages</div>
+        <h2 style={h2Style}>Need more time?<br/>Buy more. Pay less.</h2>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', margin: '32px 0 24px' }}>
+          {tiers.map((tr, i) =>
+            <button key={tr.name} onClick={() => setIdx(i)} style={{ fontSize: 13, padding: '10px 20px', borderRadius: 9999, cursor: 'pointer', border: idx === i ? '1px solid rgba(138,92,255,0.5)' : '1px solid rgba(255,255,255,0.15)', background: idx === i ? 'rgba(138,92,255,0.15)' : 'rgba(255,255,255,0.03)', color: idx === i ? '#B983FF' : 'rgba(255,255,255,0.6)' }}>{tr.mins.toLocaleString()} min</button>)}
+        </div>
+        <div className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 'clamp(28px,4vw,40px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>YOUR PACKAGE</div>
+            <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 26, color: '#fff' }}>{t.name}</div>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>{t.mins.toLocaleString()} minutes · ${t.price.toLocaleString()} / month</p>
+            <p style={{ fontSize: 12, color: '#B983FF', marginTop: 4 }}>${per} per minute{t.save > 0 ? ` · you save ${t.save}%` : ''}</p>
+          </div>
+          <a href="AgenzI Buy.html" style={{ borderRadius: 9999, padding: '13px 30px', fontSize: 14, fontWeight: 600, color: '#fff', textDecoration: 'none', ...ctaGrad }}>Buy minutes</a>
+        </div>
+      </div>
+    </section>);
+}
+
+/* ── Cap guarantee ── */
+function CapGuarantee() {
+  return (
+    <section style={{ padding: 'clamp(80px,12vw,140px) clamp(24px,6vw,80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// The cap</div>
+        <h2 style={h2Style}>You'll never get a bill you didn't expect.</h2>
+        <div className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 'clamp(28px,4vw,40px)', display: 'flex', alignItems: 'center', gap: 40, flexWrap: 'wrap', margin: '32px 0 20px' }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>WE ESTIMATE</div>
+            <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 26, color: '#fff' }}>4,000 min</div>
+          </div>
+          <ArrowUpRight size={18} />
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>WE CAP</div>
+            <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 26, color: '#B983FF' }}>5,400 min</div>
+          </div>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, maxWidth: 320 }}>That's the most you'll pay. If we're slower than we said, that's our cost. Not yours.</p>
+        </div>
+        <FaqItem q="What if I change the brief?" a="A changed brief is new scope, so it gets a new estimate and its own cap — the original cap still protects the original work." />
+      </div>
+    </section>);
+}
+
+/* ── Wallet ── */
+function Wallet() {
+  return (
+    <section style={{ padding: 'clamp(80px,12vw,140px) clamp(24px,6vw,80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// Rollover</div>
+        <h2 style={h2Style}>Unused minutes don't disappear.</h2>
+        <div className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 'clamp(28px,4vw,40px)', margin: '32px 0 20px' }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>YOUR WALLET</div>
+          <div style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 34, color: '#fff', marginBottom: 6 }}>2,184 min</div>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>Available for future work · Oldest minutes used first · Expires 12 September 2027</p>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <FaqItem q="Up to 2× your package" a="Your wallet can carry forward up to two package cycles' worth of unused minutes — after that, the oldest ones expire." />
+          <FaqItem q="12-month expiry" a="Rolled-over minutes stay usable for twelve months from the month they were bought." />
+          <FaqItem q="Oldest minutes used first" a="Jobs draw down the oldest minutes in your wallet before newer ones, so nothing expires unnecessarily." />
+        </div>
+      </div>
+    </section>);
+}
+
+/* ── What pays ── */
+function WhatPays() {
+  const items = [
+    { tag: 'AD SPEND', body: 'Your card. Your account. No markup.' },
+    { tag: 'THIRD-PARTY SOFTWARE', body: 'Your subscription. Your account. Your licence.' },
+    { tag: 'RUNNING SYSTEMS', body: 'Built once. Runs continuously. Flat monthly fee.' },
+  ];
+  return (
+    <section style={{ padding: 'clamp(80px,12vw,140px) clamp(24px,6vw,80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// Your minutes pay for the work</div>
+        <h2 style={h2Style}>Everything else is the work.</h2>
+        <p style={{ ...bodyMuted, maxWidth: 560, marginBottom: 32 }}>That's what your minutes pay for.</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+          {items.map(it =>
+            <div key={it.tag} className="liquid-glass" style={{ borderRadius: '1.25rem', padding: 24, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: '#8A5CFF' }}>{it.tag}</span>
+              <p style={{ fontSize: 14, color: '#fff', lineHeight: 1.5 }}>{it.body}</p>
+            </div>)}
+        </div>
+      </div>
+    </section>);
+}
+
+/* ── Ready to start ── */
+function ReadySteps() {
+  const steps = ['Buy minutes', 'Tell us what you need', 'We invoice you', 'We start'];
+  return (
+    <section style={{ padding: 'clamp(80px,12vw,140px) clamp(24px,6vw,80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// Ready to start</div>
+        <h2 style={h2Style}>Ready to start?</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, margin: '32px 0 20px' }}>
+          {steps.map((s, i) =>
+            <div key={s} className="liquid-glass" style={{ borderRadius: '1.25rem', padding: 22, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 20, color: '#8A5CFF' }}>{String(i + 1).padStart(2, '0')}</span>
+              <span style={{ fontSize: 14, color: '#fff' }}>{s}</span>
+            </div>)}
+        </div>
+        <p style={{ ...bodyMuted, marginBottom: 20 }}>We're onboarding our first clients personally, so there's no checkout yet.</p>
+        <a href="AgenzI Buy.html" style={{ display: 'inline-flex', borderRadius: 9999, padding: '13px 30px', fontSize: 14, fontWeight: 600, color: '#fff', textDecoration: 'none', ...ctaGrad }}>Buy minutes</a>
+      </div>
+    </section>);
+}
+
+/* ── Report vs Audit ── */
+function ReportVsAudit() {
+  return (
+    <section style={{ padding: 'clamp(80px, 12vw, 140px) clamp(24px, 6vw, 80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div className="liquid-glass" style={kicker}>// Not sure how much you need?</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 20 }}>
+          <div className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 'clamp(28px,4vw,44px)', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: '#8A5CFF' }}>FREE — AI REPORT</span>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: 'clamp(1.4rem,2.2vw,1.8rem)', color: '#fff', lineHeight: 1.2 }}>Tell us how your business runs.</h3>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>We'll show you what AI should take, what should stay human, and what it could save.</p>
+            <a href="AgenzI Free Report.html" style={{ marginTop: 'auto', borderRadius: 9999, padding: '12px 0', textAlign: 'center', fontSize: 13, fontWeight: 600, color: '#fff', textDecoration: 'none', ...ctaGrad }}>Get free report →</a>
+          </div>
+          <div className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 'clamp(28px,4vw,44px)', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: 'rgba(255,255,255,0.4)' }}>AI AUDIT</span>
+            <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: 'clamp(1.4rem,2.2vw,1.8rem)', color: '#fff', lineHeight: 1.2 }}>We'll actually look inside the business.</h3>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>What AI should do, what people should do, and what should work together.</p>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 26, color: 'rgba(255,255,255,0.3)', textDecoration: 'line-through' }}>$100</span>
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 26, color: '#fff' }}>$50</span>
+            </div>
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>Credited in full against your first project.</p>
+            <a href="AgenzI Audit.html" style={{ marginTop: 'auto', borderRadius: 9999, padding: '12px 0', textAlign: 'center', fontSize: 13, fontWeight: 600, color: '#fff', textDecoration: 'none', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}>Book audit →</a>
+          </div>
+        </div>
+      </div>
+    </section>);
+}
+
+/* ── FAQ ── */
+function FAQ() {
+  const qs = [
+    { q: 'Why minutes instead of a retainer?', a: 'A retainer charges you the same whether the work took ten hours or forty. Minutes track the actual time spent, so the bill matches the work.' },
+    { q: "Isn't $2 a minute expensive?", a: '$2 a minute is $120 an hour — in line with senior agency rates, but itemized down to the minute instead of rounded up to the nearest half-day.' },
+    { q: 'What if a job takes longer than estimated?', a: "We cap every job before it starts. If we're slower than estimated, the overage is on us, not you." },
+    { q: 'Can I use minutes across different services?', a: 'Yes. One wallet covers everything — design, video, dev, marketing, automations.' },
+    { q: 'What happens if I cancel?', a: 'Whatever is left in your wallet stays usable until it expires. Cancelling just stops future top-ups.' },
+  ];
+  return (
+    <section style={{ padding: 'clamp(80px, 12vw, 140px) clamp(24px, 6vw, 80px)' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', letterSpacing: '-2px', marginBottom: 16 }}>You probably have questions.</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 32 }}>
+          {qs.map(item => <FaqItem key={item.q} q={item.q} a={item.a} />)}
+        </div>
+      </div>
+    </section>);
+}
+
+/* ── Final paths ── */
+function FinalPaths() {
+  const paths = [
+    { tag: "I'M NOT SURE YET", title: 'Get the free report', href: 'AgenzI Free Report.html' },
+    { tag: 'I WANT TO UNDERSTAND MY BUSINESS', title: 'Book the audit', href: 'AgenzI Audit.html' },
+    { tag: 'I KNOW WHAT I NEED', title: 'Buy minutes', href: '#packages' },
+  ];
+  return (
+    <section id="cta" style={{ padding: 'clamp(80px, 12vw, 140px) clamp(24px, 6vw, 80px)', textAlign: 'center' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <h2 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(2rem, 4.2vw, 3.2rem)', color: '#fff', letterSpacing: '-2px', marginBottom: 40 }}>Start wherever makes sense.</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+          {paths.map(p =>
+            <a key={p.tag} href={p.href} className="liquid-glass" style={{ borderRadius: '1.5rem', padding: 30, display: 'flex', flexDirection: 'column', gap: 12, textDecoration: 'none' }}>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: '#8A5CFF' }}>{p.tag}</span>
+              <span style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: 20, color: '#fff' }}>{p.title}</span>
+            </a>)}
+        </div>
+      </div>
+    </section>);
+}
+
+function App() {
+  return (
+    <div style={{ minHeight: '100vh' }}>
+      <Navbar />
+      <Hero />
+      <HowItWorks />
+      <Rates />
+      <Packages />
+      <CapGuarantee />
+      <Wallet />
+      <WhatPays />
+      <ReadySteps />
+      <ReportVsAudit />
+      <FAQ />
+      <FinalPaths />
+      <Footer />
+    </div>);
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

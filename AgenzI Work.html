@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgenzI — Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#000;color:#fff;font-family:'Space Grotesk',sans-serif;overflow-x:hidden;cursor:none}
+#root,#root>div{background:transparent!important}
+#cursor-orb{position:fixed;top:0;left:0;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#FFD166 0%,#B983FF 45%,#3A6FD8 100%);box-shadow:0 0 12px 4px rgba(138,92,255,0.5),0 0 24px 8px rgba(255,178,0,0.2);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s ease,width .2s ease,height .2s ease,opacity .3s ease;mix-blend-mode:screen}
+#cursor-trail{position:fixed;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1px solid rgba(138,92,255,0.35);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s ease,width .3s ease,height .3s ease,opacity .3s ease;background:radial-gradient(circle,rgba(255,209,102,0.04) 0%,transparent 70%)}
+body:hover #cursor-orb{opacity:1}
+a:hover ~ #cursor-orb,button:hover ~ #cursor-orb{transform:translate(-50%,-50%) scale(1.6)}
+.liquid-glass{background:rgba(255,255,255,0.01);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border:none;box-shadow:inset 0 1px 1px rgba(255,255,255,0.1);position:relative;overflow:hidden}
+.liquid-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(145deg,rgba(185,131,255,0.35) 0%,rgba(58,111,216,0.15) 30%,rgba(255,255,255,0) 50%,rgba(217,70,239,0.1) 80%,rgba(255,178,0,0.2) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+#main-nav{transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s ease}
+#main-nav.nav-hidden{transform:translateY(-110%);opacity:0}
+.footer-compact{border-top:1px solid transparent;border-image:linear-gradient(to right,transparent,rgba(138,92,255,0.25),rgba(255,178,0,0.15),transparent) 1}
+::selection{background:rgba(138,92,255,0.35)}
+a{color:#B983FF}
+a:hover{color:#D9B8FF}
+</style>
+</head>
+<body>
+<video autoplay muted loop playsinline id="bg-video" style="position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:0.55">
+<source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_064122_c4750c0e-7476-4b44-94a2-a85a65c63bf2.mp4" type="video/mp4" />
+</video>
+<div style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.75) 100%)"></div>
+<div id="cursor-orb"></div>
+<div id="cursor-trail"></div>
+<div id="root"></div>
+<script src="logos.js"></script>
+<script>
+(function() {
+  const orb = document.getElementById('cursor-orb');
+  const trail = document.getElementById('cursor-trail');
+  let mx = -100, my = -100, tx = -100, ty = -100;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function tick() {
+    tx += (mx - tx) * 0.18; ty += (my - ty) * 0.18;
+    orb.style.left = mx + 'px'; orb.style.top = my + 'px';
+    trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+  document.addEventListener('mouseover', e => {
+    if (e.target.closest('a, button')) {
+      orb.style.width = '28px'; orb.style.height = '28px';
+      orb.style.boxShadow = '0 0 20px 8px rgba(138,92,255,0.7), 0 0 40px 16px rgba(255,178,0,0.3)';
+      trail.style.width = '56px'; trail.style.height = '56px';
+      trail.style.borderColor = 'rgba(185,131,255,0.5)';
+    }
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest('a, button')) {
+      orb.style.width = '18px'; orb.style.height = '18px';
+      orb.style.boxShadow = '0 0 12px 4px rgba(138,92,255,0.5), 0 0 24px 8px rgba(255,178,0,0.2)';
+      trail.style.width = '36px'; trail.style.height = '36px';
+      trail.style.borderColor = 'rgba(138,92,255,0.35)';
+    }
+  });
+})();
+</script>
+<script type="text/babel">
+const { useRef, useEffect, useState } = React;
+
+function ArrowUpRight({ size = 20 }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>);
+}
+
+function Navbar() {
+  const lastY = useRef(0);
+  useEffect(() => {
+    const nav = document.getElementById('main-nav');
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < 60) nav.classList.remove('nav-hidden');
+      else if (y > lastY.current + 8) nav.classList.add('nav-hidden');
+      else if (y < lastY.current - 8) nav.classList.remove('nav-hidden');
+      lastY.current = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  const links = [['Services','AgenzI Services.html'],['Work','AgenzI Work.html'],['Pricing','AgenzI Pricing.html'],['Notes','AgenzI Notes.html'],['About','AgenzI About.html']];
+  return (
+    <nav id="main-nav" style={{ position: 'fixed', top: 16, left: 0, right: 0, zIndex: 50, padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <a href="AgenzI.html" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+        <img src={window.LOGO_HORIZONTAL} alt="AgenzI" style={{ height: 48, display: 'block', objectFit: 'contain' }} />
+      </a>
+      <div className="liquid-glass" style={{ display: 'flex', alignItems: 'center', borderRadius: 9999, padding: '6px 6px', gap: 2 }}>
+        {links.map(([label, href]) =>
+          <a key={label} href={href} style={{ padding: '8px 14px', fontSize: 13, fontWeight: label === 'Work' ? 600 : 500, color: label === 'Work' ? '#B983FF' : 'rgba(255,255,255,0.85)', textDecoration: 'none', borderRadius: 9999 }}>{label}</a>
+        )}
+        <a href="AgenzI Free Report.html" style={{ padding: '8px 18px', fontSize: 13, fontWeight: 600, background: 'linear-gradient(135deg, #6C3FCF, #3A6FD8)', color: '#fff', borderRadius: 9999, textDecoration: 'none', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 0 16px rgba(108,63,207,0.4)' }}>Get your free AI report</a>
+      </div>
+      <div style={{ width: 64 }}></div>
+    </nav>);
+}
+
+function Footer() {
+  return (
+    <footer className="footer-compact" style={{ padding: '32px clamp(24px, 6vw, 80px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <img src={window.LOGO_HORIZONTAL} alt="AgenzI" style={{ height: 36, objectFit: 'contain', display: 'block' }} />
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Create · Market · Run</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+          {['Services', 'Work', 'Notes', 'Pricing', 'About', 'Zenzai', 'AI Audit', 'Privacy', 'Terms'].map(l =>
+            <a key={l} href={{Services:'AgenzI Services.html',Work:'AgenzI Work.html',Notes:'AgenzI Notes.html',Pricing:'AgenzI Pricing.html',About:'AgenzI About.html','AI Audit':'AgenzI Audit.html',Privacy:'AgenzI Privacy.html',Terms:'AgenzI Terms.html'}[l] || '#'} style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}>{l}</a>)}
+        </div>
+      </div>
+      <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(255,255,255,0.2)', marginTop: 20 }}>© 2026 AgenzI. All rights reserved.</p>
+    </footer>);
+}
+
+const kicker = { display: 'inline-flex', borderRadius: 9999, padding: '5px 16px', fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 20 };
+const h2Style = { fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(2rem, 4.2vw, 3.2rem)', color: '#fff', lineHeight: 1.08, letterSpacing: '-2px', maxWidth: 760, marginBottom: 16 };
+const ctaGrad = { background: 'linear-gradient(135deg,#6C3FCF,#3A6FD8)' };
+const CATS = ['All', 'Marketing', 'Video & Content', 'Websites & Apps', 'AI & Automation'];
+const PROJECTS = [
+  { name: '[ project name ]', cat: 'Websites & Apps', tag: '[ e.g. website build ]' },
+  { name: '[ project name ]', cat: 'Video & Content', tag: '[ e.g. campaign video ]' },
+  { name: '[ project name ]', cat: 'AI & Automation', tag: '[ e.g. workflow automation ]' },
+  { name: '[ project name ]', cat: 'Marketing', tag: '[ e.g. ad creative set ]' },
+  { name: '[ project name ]', cat: 'Websites & Apps', tag: '[ e.g. app screens ]' },
+  { name: '[ project name ]', cat: 'AI & Automation', tag: '[ e.g. OCR pipeline ]' },
+  { name: '[ project name ]', cat: 'Video & Content', tag: '[ e.g. brand film ]' },
+  { name: '[ project name ]', cat: 'Marketing', tag: '[ e.g. lead-gen campaign ]' },
+  { name: '[ project name ]', cat: 'Websites & Apps', tag: '[ e.g. brand identity ]' },
+];
+
+function ProjectCard({ p }) {
+  return (
+    <div className="liquid-glass" style={{ borderRadius: '1.25rem', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ aspectRatio: '16/10', backgroundImage: 'url("uploads/Screenshot 2026-09-11 at 10.50.51 PM.png")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+      <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: '#8A5CFF' }}>{p.cat.toUpperCase()}</span>
+        <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 700, fontSize: 16, color: 'rgba(255,255,255,0.5)' }}>{p.name}</p>
+        <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.35)' }}>{p.tag}</p>
+      </div>
+    </div>);
+}
+
+function App() {
+  const [active, setActive] = useState('All');
+  const visible = active === 'All' ? PROJECTS : PROJECTS.filter(p => p.cat === active);
+  return (
+    <div style={{ background: '#000', minHeight: '100vh' }}>
+      <Navbar />
+      <section style={{ padding: '180px clamp(24px,6vw,80px) 40px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div className="liquid-glass" style={kicker}>// Work</div>
+          <h1 style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: 800, fontSize: 'clamp(2.2rem,5vw,3.8rem)', color: '#fff', letterSpacing: '-2.5px', lineHeight: 1.05, marginBottom: 20 }}>What we've built.</h1>
+          <p style={{ fontSize: 15.5, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, maxWidth: 640 }}>Every project we publish here shows the same three things: what the business needed, what we made, and how long it took. That last one is the point.</p>
+        </div>
+      </section>
+      <section style={{ padding: '0 clamp(24px,6vw,80px) 40px' }}>
+        <div className="liquid-glass" style={{ maxWidth: 1100, margin: '0 auto', borderRadius: '1.25rem', padding: 24 }}>
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, fontStyle: 'italic' }}>We're writing up our first case studies properly — the situation, the work, and how long it took. In the meantime, the free report will show you what we'd do for your business.</p>
+        </div>
+      </section>
+      <section style={{ padding: '20px clamp(24px,6vw,80px) clamp(80px,10vw,120px)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 32 }}>
+            {CATS.map(c =>
+              <button key={c} onClick={() => setActive(c)} style={{ fontSize: 13, padding: '9px 18px', borderRadius: 9999, cursor: 'pointer', border: active === c ? '1px solid rgba(138,92,255,0.5)' : '1px solid rgba(255,255,255,0.15)', background: active === c ? 'rgba(138,92,255,0.15)' : 'rgba(255,255,255,0.03)', color: active === c ? '#B983FF' : 'rgba(255,255,255,0.6)' }}>{c}</button>)}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16, marginBottom: 24 }}>
+            {visible.map((p,i) => <ProjectCard key={i} p={p} />)}
+          </div>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>Portfolio grid placeholders — real project images, names and one-line summaries go here as work is published (client permission confirmed per project).</p>
+        </div>
+      </section>
+      <section style={{ padding: '0 clamp(24px,6vw,80px) clamp(80px,12vw,140px)', textAlign: 'center' }}>
+        <div style={{ maxWidth: 700, margin: '0 auto' }}>
+          <h2 style={{ ...h2Style, margin: '0 auto 16px' }}>Want to see what this would look like for you?</h2>
+          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, marginBottom: 32 }}>Tell us how your business runs. We'll send back a free report on where AI fits — the specific work, not a category.</p>
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="AgenzI Free Report.html" style={{ borderRadius: 9999, padding: '13px 28px', fontSize: 13.5, fontWeight: 600, color: '#fff', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6, ...ctaGrad }}>Get your free AI report <ArrowUpRight size={14} /></a>
+            <a href="AgenzI Audit.html" className="liquid-glass" style={{ borderRadius: 9999, padding: '13px 28px', fontSize: 13.5, fontWeight: 500, color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Book the AI Audit — $50</a>
+            <a href="AgenzI Services.html" className="liquid-glass" style={{ borderRadius: 9999, padding: '13px 28px', fontSize: 13.5, fontWeight: 500, color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>See what we do</a>
+          </div>
+        </div>
+      </section>
+      <Footer />
+    </div>);
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
